@@ -1,4 +1,4 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -21,10 +21,10 @@ const userSchema = new mongoose.Schema({
         validate: [validator.isEmail, "Please Enter Your Valid Email !"]
     },
     phone: {
-        type: String,
+        type: Number,
         required: true,
-        minLength: [11, "Phone number must contains exact 11 digits !"],
-        maxLength: [11, "Phone number must contains exact 11 digits !"]
+        minLength: [10, "Phone number must contains exact 10 digits !"],
+        maxLength: [10, "Phone number must contains exact 10 digits !"]
     },
     uid: {
         type: String,
@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         minLength: [8, "Password must contains 8 characters"],
-        require: true,
+        required: true,
         select: false
     },
     role: {
@@ -66,15 +66,16 @@ userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {
         next()
     }
-    this.password = bcrypt.hash(this.password, 10);
+    this.password =await bcrypt.hash(this.password, 16);
 })
 
 userSchema.methods.comparePassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
-}
+};
+
 userSchema.methods.generateJsonWebtoken = function () {
     return jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRES })
 }
 
-
+// module.exports = comparePassword;
 export const User = mongoose.model("User", userSchema);
