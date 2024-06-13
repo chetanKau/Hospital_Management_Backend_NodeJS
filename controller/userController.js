@@ -3,6 +3,7 @@ import ErrorHandler from "../middlewares/errorMiddleware.js"
 import { User } from './../models/userSchema.js';
 import { generateToken } from "../utils/jwtToken.js"
 
+/*** PATIENT REGISTRATION ***/
 export const patientRegister = catchAsyncError(async (req, res, next) => {
     const { firstName, lastName, email, phone, dob, uid, role, password, gender } = req.body;
     if (!firstName || !lastName || !email || !phone || !dob || !uid || !role || !password || !gender) {
@@ -19,7 +20,7 @@ export const patientRegister = catchAsyncError(async (req, res, next) => {
 
 })
 
-
+/***LOGIN ***/
 export const login = catchAsyncError(async (req, res, next) => {
     const { email, password, confirmPassword, role } = req.body;
 
@@ -50,5 +51,31 @@ export const login = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler("User role Mismatched !", 400))
     }
     generateToken(userDB, "User Login Successfully", 200, res)
+
+})
+
+/*** ADD NEW ADMIN ***/
+
+export const addNewAdmin = catchAsyncError(async (req, res, next) => {
+    const { firstName, lastName, email, phone, dob, uid, password, gender } = req.body;
+    if (!firstName || !lastName || !email || !phone || !dob || !uid || !password || !gender) {
+        return next(new ErrorHandler("Please fill your form !", 400))
+    }
+
+    const isUserAlreadyRegistered = await User.findOne({ email })
+    if (isUserAlreadyRegistered) {
+        return next(new ErrorHandler("This Email is already Registered !"))
+    }
+
+    const admin = await User.create({
+        firstName, lastName, email, phone, dob, uid, password, gender, role: "ADMIN"
+    })
+    console.log("New admin-",admin);
+
+    res.status(200).json({
+        success: true,
+        message: "New Admin Registered Successfully"
+    })
+
 
 })

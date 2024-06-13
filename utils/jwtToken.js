@@ -1,11 +1,11 @@
 export const generateToken = (user, message, statusCode, res) => {
-    console.log("User-", user);
+    // console.log("User-", user);
 
     const token = user.generateJsonWebtoken();
-    console.log("Token-", token);
+    // console.log("Token-", token);
 
     const cookieName = user.role === "ADMIN" ? "adminToken" : "patientToken";
-    console.log("cookie-", cookieName);
+    // console.log("cookie-", cookieName);
 
     res
         .status(statusCode)
