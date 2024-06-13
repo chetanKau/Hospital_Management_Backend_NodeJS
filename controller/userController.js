@@ -1,7 +1,7 @@
 import { catchAsyncError } from "../middlewares/catchAsyncErrors.js";
 import ErrorHandler from "../middlewares/errorMiddleware.js"
 import { User } from './../models/userSchema.js';
-import bcrypt from "bcrypt";
+import { generateToken } from "../utils/jwtToken.js"
 
 export const patientRegister = catchAsyncError(async (req, res, next) => {
     const { firstName, lastName, email, phone, dob, uid, role, password, gender } = req.body;
@@ -15,10 +15,8 @@ export const patientRegister = catchAsyncError(async (req, res, next) => {
 
     user = User.create({ firstName, lastName, email, phone, dob, uid, role, password, gender })
 
-    return res.status(200).json({
-        status: true,
-        message: "User Registered Successfully"
-    })
+    generateToken(user, "User Registered Successfully", 200, res)
+
 })
 
 
@@ -33,13 +31,13 @@ export const login = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler("Password and confirm password not matched !", 400))
     }
 
-    const userDB =await User.findOne({ email }).select("+password")
+    const userDB = await User.findOne({ email }).select("+password")
     // console.log(user.email,"emal");
 
     if (!userDB) {
         return next(new ErrorHandler("Invalid user name or password !", 400))
     }
-    console.log("userDB-", userDB);
+    // console.log("userDB-", userDB);
     const isPasswordMatched = await userDB.comparePassword(password)
 
     // const isPasswordMatched = await bcrypt.compareSync(password, userDB.password);
@@ -51,9 +49,6 @@ export const login = catchAsyncError(async (req, res, next) => {
     if (role !== userDB.role) {
         return next(new ErrorHandler("User role Mismatched !", 400))
     }
-    return res.status(200).json({
-        status: true,
-        message: "User Login Successfully"
-    })
+    generateToken(userDB, "User Login Successfully", 200, res)
 
 })
