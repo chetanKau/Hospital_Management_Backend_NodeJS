@@ -109,3 +109,14 @@ export const logoutAdmin = catchAsyncError(async (req, res, next) => {
         message:"Admin Logged Out Successfully"
     })
 })
+
+/*** Logout User/Patient ***/
+export const logoutUser = catchAsyncError(async (req, res, next) => {
+    res.status(200).cookie("patientToken","",{
+        httpOnly:true,
+        expires:new Date(Date.now())
+    }).json({
+        success:true,
+        message:"User Logged Out Successfully"
+    })
+})
