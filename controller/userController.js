@@ -55,7 +55,6 @@ export const login = catchAsyncError(async (req, res, next) => {
 })
 
 /*** ADD NEW ADMIN ***/
-
 export const addNewAdmin = catchAsyncError(async (req, res, next) => {
     const { firstName, lastName, email, phone, dob, uid, password, gender } = req.body;
     if (!firstName || !lastName || !email || !phone || !dob || !uid || !password || !gender) {
@@ -78,4 +77,24 @@ export const addNewAdmin = catchAsyncError(async (req, res, next) => {
     })
 
 
+})
+
+
+/*** Get All Doctors ***/
+export const getAllDoctors = catchAsyncError(async (req, res, next) => {
+    const doctors = await User.findOne({ role: "DOCTOR" })
+
+    res.status(200).json({
+        success: true,
+        doctors
+    })
+})
+
+/*** Get All Users ***/
+export const getUserDetails = catchAsyncError(async (req, res, next) => {
+    const allUsers = req.user
+    res.status(200).json({
+        success: true,
+        allUsers
+    })
 })

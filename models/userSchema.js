@@ -29,8 +29,8 @@ const userSchema = new mongoose.Schema({
     uid: {
         type: String,
         required: true,
-        minLength: [8, "NIC number must contains 8 digits !"],
-        maxLength: [8, "NIC number must contains 8 digits !"]
+        minLength: [8, "UID number must contains 8 digits !"],
+        maxLength: [8, "UID number must contains 8 digits !"]
     },
     dob: {
         type: Date,
