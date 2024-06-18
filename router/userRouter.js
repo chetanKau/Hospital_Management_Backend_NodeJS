@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, patientRegister, addNewAdmin, getAllDoctors, getUserDetails } from "../controller/userController.js"
+import { login, patientRegister, addNewAdmin, getAllDoctors, getUserDetails, logoutAdmin } from "../controller/userController.js"
 import { isAdminAuthorized, isPatientAuthorized } from "../middlewares/authMiddleware.js"
 
 const router = Router();
@@ -10,7 +10,7 @@ router.post("/admin/addNew", isAdminAuthorized, addNewAdmin)
 router.get("/doctors", getAllDoctors);
 router.get("/admin/me", isAdminAuthorized, getUserDetails)
 router.get("/patient/me", isPatientAuthorized, getUserDetails)
-
+router.get("/admin/logout", isAdminAuthorized, logoutAdmin)
 
 
 

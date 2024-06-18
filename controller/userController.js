@@ -98,3 +98,14 @@ export const getUserDetails = catchAsyncError(async (req, res, next) => {
         allUsers
     })
 })
+
+/*** Logout Admin ***/
+export const logoutAdmin = catchAsyncError(async (req, res, next) => {
+    res.status(200).cookie("adminToken","",{
+        httpOnly:true,
+        expires:new Date(Date.now())
+    }).json({
+        success:true,
+        message:"Admin Logged Out Successfully"
+    })
+})

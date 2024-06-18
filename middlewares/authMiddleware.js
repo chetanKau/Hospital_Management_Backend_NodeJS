@@ -23,7 +23,6 @@ export const isAdminAuthorized = catchAsyncError(async (req, res, next) => {
 })
 
 
-
 /**  Patient Athuorization code   */
 export const isPatientAuthorized = catchAsyncError(async (req, res, next) => {
     const token = req.cookies.patientToken;
