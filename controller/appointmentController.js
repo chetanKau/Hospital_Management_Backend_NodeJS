@@ -3,6 +3,8 @@ import { Appointment } from './../models/appointmentSchema.js';
 import { User } from "../models/userSchema.js";
 import ErrorHandler from './../middlewares/errorMiddleware.js';
 
+
+/** Book Appointment */
 export const postAppointment = catchAsyncError(async (req, res, next) => {
     const { firstName, lastName, email, phone, uid, dob, gender, appointment_date, department, doctor_firstName, doctor_lastName, hasVisited, address } = req.body;
 
@@ -40,4 +42,33 @@ export const postAppointment = catchAsyncError(async (req, res, next) => {
         appointment
     })
 
+})
+
+/** Get all Appointment */
+
+export const getAllAppointment = catchAsyncError(async (req, res, next) => {
+    const appointments = await Appointment.find();
+    res.status(200).json({
+        success: true,
+        appointments
+    })
+})
+
+/** Update Appointment */
+export const updateAppointment = catchAsyncError(async (req, res, next) => {
+    const { id } = req.params;
+    let appointment = await Appointment.findById(id);
+    if (!appointment) {
+        return next(new ErrorHandler("Appointment not Found !", 404))
+    }
+    appointment = await Appointment.findByIdAndUpdate(id, req.body, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false
+    })
+    res.status(200).json({
+        success: true,
+        message:"Appointment Status Updated",
+        appointment
+    })
 })

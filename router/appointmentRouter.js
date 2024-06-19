@@ -1,10 +1,12 @@
 import express from 'express';
-import { postAppointment } from '../controller/appointmentController.js';
+import { postAppointment, getAllAppointment, updateAppointment } from '../controller/appointmentController.js';
 import { isAdminAuthorized, isPatientAuthorized } from "../middlewares/authMiddleware.js"
 const router = express.Router();
 
 
-router.post("/post", isPatientAuthorized, postAppointment)
+router.post("/post", isPatientAuthorized, postAppointment);
+router.get("/getall", isAdminAuthorized, getAllAppointment);
+router.put("/update/:id", isAdminAuthorized, updateAppointment);
 
 
 export default router;
