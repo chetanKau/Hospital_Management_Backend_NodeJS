@@ -68,7 +68,22 @@ export const updateAppointment = catchAsyncError(async (req, res, next) => {
     })
     res.status(200).json({
         success: true,
-        message:"Appointment Status Updated",
+        message: "Appointment Status Updated",
         appointment
     })
+})
+
+/** Delete Appointment */
+export const deleteAppointment = catchAsyncError(async (req, res, next) => {
+    const { id } = req.params;
+    let appointment = await Appointment.findById(id);
+    if (!appointment) {
+        return next(new ErrorHandler("Appointment not Found !", 404))
+    }
+    await Appointment.deleteOne()
+    res.status(200).json({
+        success: true,
+        message: "Apointment Deleted Successfully!"
+    })
+
 })
