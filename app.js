@@ -39,7 +39,10 @@ app.use(cors({
 
 // Handling preflight requests
 app.options('*', cors());
-
+app.use((req, res, next) => {
+    console.log('CORS middleware invoked');
+    next();
+});
 
 
 
