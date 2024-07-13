@@ -52,7 +52,7 @@ export const login = catchAsyncError(async (req, res, next) => {
     if (role !== userDB.role) {
         return next(new ErrorHandler("User role Mismatched !", 400))
     }
-    generateToken(userDB, "User Login Successfully", 200, res)
+     generateToken(userDB, "User Login Successfully", 200, res)
 
 })
 

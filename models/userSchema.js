@@ -66,15 +66,17 @@ userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {
         next()
     }
-    this.password =await bcrypt.hash(this.password, 16);
+    this.password = await bcrypt.hash(this.password, 16);
 })
 
 userSchema.methods.comparePassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
-userSchema.methods.generateJsonWebToken =async function() {
-  return await jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRES });
+userSchema.methods.generateJsonWebToken = function () {
+    return jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, {
+        expiresIn: process.env.JWT_EXPIRES,
+    });
 };
 
 // module.exports = comparePassword;

@@ -1,7 +1,7 @@
 export const generateToken = (user, message, statusCode, res) => {
     // console.log("User-", user);
 
-    const token = user.generateJsonWebtoken();
+    const token = user.generateJsonWebToken();
     // console.log("Token-", token);
 
     const cookieName = user.role === "ADMIN" ? "adminToken" : "patientToken";

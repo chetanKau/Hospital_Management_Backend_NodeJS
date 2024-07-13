@@ -6,7 +6,7 @@ const router = Router();
 
 router.post("/patient/register", patientRegister);
 router.post("/login", login);
-router.post("/admin/addNew", isAdminAuthorized, addNewAdmin)
+router.post("/admin/addNew", addNewAdmin)
 router.get("/doctors", getAllDoctors);
 router.get("/admin/me", isAdminAuthorized, getUserDetails)
 router.get("/patient/me", isPatientAuthorized, getUserDetails)
