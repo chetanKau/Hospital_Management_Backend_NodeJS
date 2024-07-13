@@ -12,8 +12,10 @@ export const generateToken = (user, message, statusCode, res) => {
         .cookie(cookieName,
             token,
             {
-                expires: new Date(Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
-                httpOnly:true,
+                maxAge: 15 * 24 * 60 * 60 * 1000,  //ms
+                sameSite: 'none',
+                secure: true,
+                path: '/',
             })
         .json({
             success: true,
